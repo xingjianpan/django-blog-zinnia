@@ -6,14 +6,20 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from zinnia.managers import EntryRelatedPublishedManager
 from zinnia.managers import entries_published
-
+from m5.users.models import User
 
 def safe_get_user_model():
     """
     Safe loading of the User model, customized or not.
     """
     user_app, user_model = settings.AUTH_USER_MODEL.split('.')
-    return apps.get_registered_model(user_app, user_model)
+    """
+    Got error:
+        LookupError: Model 'users.User' not registered.
+    As a walkaround, return User model directly.
+    """
+    # return apps.get_registered_model(user_app, user_model)
+    return User
 
 
 class AuthorPublishedManager(models.Model):
